@@ -2,6 +2,7 @@
 
 # Virtualenv and checkout
 {% set site_path = '/home/docs/sites/readthedocs.org' %}
+{% set site_path = salt['pillar.get']('rtd_site_path') %}
 
 {{ site_path }}:
   file.directory:
@@ -38,7 +39,8 @@
 # for external dependencies and pip.installed doesn't respect the cwd, making
 # requirements such as -r pip_requirements.txt fail
 rtd-deps:
-  cmd.wait:
+  cmd:
+    - wait
     - name:
         {{ site_path }}/bin/pip install
         --timeout 120
@@ -127,12 +129,14 @@ rtd-build-pkgs:
 {% for service in ['gunicorn', 'celery'] %}
 /etc/init/readthedocs-{{ service }}.conf:
   file.managed:
-    - source: salt://upstart/readthedocs-{{ service }}.conf
+    - source: salt://readthedocs/files/readthedocs-{{ service }}.conf
     - reload_modules: True
     - require:
       - cmd: rtd-deps
     - watch:
       - cmd: rtd-db-migrate
+
+
 
 readthedocs-{{ service }}:
   service.running:
@@ -146,7 +150,7 @@ readthedocs-{{ service }}:
 
 /etc/nginx/sites-enabled/readthedocs:
   file.managed:
-    - source: salt://nginx/sites/readthedocs
+    - source: salt://readthedocs/files/readthedocs
     - mode: 0640
     - template: jinja
     - watch_in:
@@ -158,7 +162,7 @@ readthedocs-{{ service }}:
 
 /usr/share/nginx/perl/ReadTheDocs.pm:
   file.managed:
-    - source: salt://nginx/perl/lib/ReadTheDocs.pm
+    - source: salt://readthedocs/files/ReadTheDocs.pm
     - watch_in:
       - service: nginx
     - require:

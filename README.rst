@@ -34,4 +34,6 @@ Available states
 ----------------
 
 memcached: https://github.com/saltstack-formulas/memcached-formula
-
+redis: https://github.com/saltstack-formulas/redis-formula
+pip: https://github.com/saltstack-formulas/pip-formula
+virtualenv: https://github.com/saltstack-formulas/virtualenv-formula

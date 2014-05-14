@@ -1,4 +1,6 @@
 # Nginx
+include:
+  - nginx
 
 nginx:
   pkg.installed:
@@ -10,7 +12,7 @@ nginx:
 
 /etc/nginx/nginx.conf:
   file.managed:
-    - source: salt://nginx/nginx.conf
+    - source: salt://readthedocs/files/nginx.conf
     - mode: 0640
 
 /etc/nginx/sites-enabled/default:
