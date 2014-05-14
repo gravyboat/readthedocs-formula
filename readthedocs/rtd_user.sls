@@ -1,7 +1,8 @@
 # User setup
 
 docs:
-  user.present:
+  user:
+    - present
     - fullname: Docs User
     - uid: 1005
     - gid: 205
@@ -13,16 +14,20 @@ docs:
   group.present:
     - gid: 205
 
-/home/docs/.bash_profile:
-  file.managed:
-    - source: salt://readthedocs/user/bash_profile
+bash_profile
+  file:
+    - managed
+    - name: /home/docs/.bash_profile:
+    - source: salt://readthedocs/files/bash_profile
     - user: docs
     - group: docs
     - require:
       - user: docs
 
-/home/docs/.ssh:
-  file.directory:
+ssh_dir:
+  file:
+    - directory
+    - name: /home/docs/.ssh
     - user: docs
     - group: docs
     - mode: 0700
@@ -30,9 +35,12 @@ docs:
       - user: docs
 
 # TODO configure key based on host name
-/home/docs/.ssh/id_rsa:
-  file.managed:
-    - source: salt://readthedocs/user/private_key
+
+id_rsa:
+  file:
+    - managed
+    - name: /home/docs/.ssh/id_rsa:
+    - source: salt://readthedocs/files/private_key
     - user: docs
     - group: docs
     - mode: 0400
