@@ -2,7 +2,7 @@
 
 # Virtualenv and checkout
 {% set site_path = '/home/docs/sites/readthedocs.org' %}
-{% set site_path = salt['pillar.get']('rtd_site_path') %}
+{% set site_path = salt['pillar.get']('rtd:lookup:rtd_site_path') %}
 
 {{ site_path }}:
   file.directory:

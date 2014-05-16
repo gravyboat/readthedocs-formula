@@ -1,0 +1,3 @@
+readthedocs:
+  lookup:
+    rtd_site_path: /home/docs/sites/readthedocs.org
